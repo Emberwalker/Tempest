@@ -91,8 +91,7 @@ end
 function Tempest:OnDbg_GetChannels()
 	self:Log(tostring(ChatSystemLib.GetChannels()))
 	for k, v in ipairs(ChatSystemLib.GetChannels()) do
-		self:Log("GetChannels(): " .. tostring(k) .. " : " .. tostring(v))
-		self:LogTable(getmetatable(v))
+		self:Log("GetChannels(): " .. tostring(k) .. " : " .. v:GetName())
 	end
 end
 
