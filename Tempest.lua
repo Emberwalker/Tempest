@@ -96,6 +96,28 @@ function Tempest:OnDbg_GetChannels()
 	end
 end
 
+-- Evaluate code in the EvalText box.
+function Tempest:OnDbg_Eval()
+	if self.evalText == nil then
+		local bg = self:FindInComponent(self.wndMain, "BG_EvalText")
+		self.evalText = self:FindInComponent(bg, "EvalText")
+	end
+	
+	local f, err = loadstring("return function (t) ".. self.evalText:GetText() .." end")
+	if f == nil then
+		self:Log("Function failed to compile. Aborting.")
+		Print(err)
+		return
+	end
+	
+	local o = f()(self)
+	if o == nil then
+		self:Log("No output for compiled function.")
+		return
+	end
+	self:Log("Got output: "..tostring(o))
+end
+
 function Tempest:OnDbg_Close()
 	self.wndMain:Close()
 end
@@ -116,6 +138,13 @@ function Tempest:LogTable(tTab)
 	for k, v in pairs(tTab) do
 		self:Log(tostring(k).." : "..tostring(v))
 	end
+end
+
+function Tempest:FindInComponent(wWind, sName)
+	for k, v in pairs(wWind:GetChildren()) do
+		if (v:GetName() == sName) then return v end
+	end
+	return nil
 end
 
 
