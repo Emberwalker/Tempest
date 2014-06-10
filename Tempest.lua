@@ -54,19 +54,22 @@ function Tempest:OnDocLoaded()
 
 	if self.xmlDoc ~= nil and self.xmlDoc:IsLoaded() then
 	    self.wndMain = Apollo.LoadForm(self.xmlDoc, "Debug", nil, self)
-		if self.wndMain == nil then
-			Apollo.AddAddonErrorText(self, "Could not load the main window for some reason.")
+		self.wndInt = Apollo.LoadForm(self.xmlDoc, "Interpreter", nil, self)
+		if self.wndMain == nil or self.wndInt == nil then
+			Apollo.AddAddonErrorText(self, "Could not load a window for some reason.")
 			return
 		end
 		
 	    self.wndMain:Show(false, true)
+		self.wndInt:Show(false, true)
 
 		-- if the xmlDoc is no longer needed, you should set it to nil
-		-- self.xmlDoc = nil
+		self.xmlDoc = nil
 		
 		-- Register handlers for events, slash commands and timer, etc.
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("tempest", "OnTempestOn", self)
+		Apollo.RegisterSlashCommand("lua", "OnLuaOn", self)
 
 
 		-- Do additional Addon initialization here
@@ -83,9 +86,14 @@ function Tempest:OnTempestOn()
 	self.wndMain:Invoke() -- show the window
 end
 
+-- on SlashCommand "/lua"
+function Tempest:OnLuaOn()
+	self.wndInt:Invoke()
+end
+
 
 -----------------------------------------------------------------------------------------------
--- TempestForm Functions
+-- Debug Functions
 -----------------------------------------------------------------------------------------------
 -- GetChannels() debug
 function Tempest:OnDbg_GetChannels()
@@ -102,25 +110,28 @@ function Tempest:OnDbg_Eval()
 		self.evalText = self:FindInComponent(bg, "EvalText")
 	end
 	
-	local f, err = loadstring("return function (t) ".. self.evalText:GetText() .." end")
-	if f == nil then
-		self:Log("Function failed to compile. Aborting.")
-		Print(err)
-		return
-	end
-	
-	local o = f()(self)
-	if o == nil then
-		self:Log("No output for compiled function.")
-		return
-	end
-	self:Log("Got output: "..tostring(o))
+	self:CompileAndRun(self.evalText:GetText())
 end
 
 function Tempest:OnDbg_Close()
 	self.wndMain:Close()
 end
 
+
+-----------------------------------------------------------------------------------------------
+-- Interpreter Functions
+-----------------------------------------------------------------------------------------------
+function Tempest:OnInt_Eval()
+	if self.intText == nil then
+		self.intText = self:FindInComponent(self.wndInt, "EvalText")
+	end
+	
+	self:CompileAndRun(self.intText:GetText())
+end
+
+function Tempest:OnInt_Close()
+	self.wndInt:Close()
+end
 
 -----------------------------------------------------------------------------------------------
 -- Helpers
@@ -144,6 +155,22 @@ function Tempest:FindInComponent(wWind, sName)
 		if (v:GetName() == sName) then return v end
 	end
 	return nil
+end
+
+function Tempest:CompileAndRun(sProgram)
+	local f, err = loadstring("return function (t) ".. sProgram .." end")
+	if f == nil then
+		self:Log("Function failed to compile. Aborting.")
+		self:Log(err)
+		return
+	end
+	
+	local o = f()(self)
+	if o == nil then
+		self:Log("No output for compiled function.")
+		return
+	end
+	self:Log("Got output: "..tostring(o))
 end
 
 
