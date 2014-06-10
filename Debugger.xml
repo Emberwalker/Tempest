@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Forms>
+    <Form Class="Window" LAnchorPoint="0" LAnchorOffset="16" TAnchorPoint="0" TAnchorOffset="16" RAnchorPoint="0" RAnchorOffset="458" BAnchorPoint="0" BAnchorOffset="426" RelativeToClient="1" Font="Default" Text="" BGColor="UI_WindowBGDefault" TextColor="UI_WindowTextDefault" Template="CRB_NormalFramedThick_StandardHdrFtr" TooltipType="OnCursor" Name="Debug" Border="1" Picture="1" SwallowMouseClicks="1" Moveable="1" Escapable="1" Overlapped="1" TooltipColor="" Tooltip="">
+        <Control Class="Button" Base="CRB_Basekit:kitBtn_Holo_Red" Font="DefaultButton" ButtonType="PushButton" RadioGroup="" LAnchorPoint="0" LAnchorOffset="303" TAnchorPoint="0" TAnchorOffset="345" RAnchorPoint="0" RAnchorOffset="412" BAnchorPoint="0" BAnchorOffset="378" DT_VCENTER="1" DT_CENTER="1" BGColor="AddonError" TextColor="UI_BtnTextDefault" NormalTextColor="UI_BtnTextDefault" PressedTextColor="UI_BtnTextDefault" FlybyTextColor="UI_BtnTextDefault" PressedFlybyTextColor="UI_BtnTextDefault" DisabledTextColor="UI_BtnTextDefault" TooltipType="OnCursor" Name="CloseButton" TooltipColor="" Text="" TextId="CRB_Close">
+            <Event Name="ButtonSignal" Function="OnDbg_Close"/>
+        </Control>
+        <Control Class="Window" LAnchorPoint="0" LAnchorOffset="36" TAnchorPoint="0" TAnchorOffset="4" RAnchorPoint="1" RAnchorOffset="-36" BAnchorPoint="0" BAnchorOffset="33" RelativeToClient="1" Font="CRB_InterfaceMedium" Template="Default" Name="Title" BGColor="ffffffff" TextColor="ffc0c0c0" DT_VCENTER="1" DT_CENTER="1" NewControlDepth="2" TextId="" Text="Tempest (Developer)" TooltipColor="" Tooltip=""/>
+        <Control Class="Button" Base="CRB_Basekit:kitBtn_Holo_Large" Font="DefaultButton" ButtonType="PushButton" RadioGroup="" LAnchorPoint="0" LAnchorOffset="31" TAnchorPoint="0" TAnchorOffset="74" RAnchorPoint="0" RAnchorOffset="145" BAnchorPoint="0" BAnchorOffset="113" DT_VCENTER="1" DT_CENTER="1" BGColor="UI_BtnBGDefault" TextColor="UI_BtnTextDefault" NormalTextColor="UI_BtnTextDefault" PressedTextColor="UI_BtnTextDefault" FlybyTextColor="UI_BtnTextDefault" PressedFlybyTextColor="UI_BtnTextDefault" DisabledTextColor="UI_BtnTextDefault" TooltipType="OnCursor" Name="DbgGetChannelsButton" TooltipColor="" Text="GetChannels()" TextId="">
+            <Event Name="ButtonSignal" Function="OnDbg_GetChannels"/>
+        </Control>
+    </Form>
+</Forms>
